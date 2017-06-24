@@ -5,8 +5,17 @@ class App extends Component {
     constructor() {
         super()
         this.state = {
-            comics: [{name: "hi"}]
+            comics: [{name: 'before-fetch'}]
         }
+    }
+
+    componentDidMount() {
+        fetch(new Request('/blah'))
+            .then(res => {
+                this.setState({
+                    comics: [{name: 'after-fetch'}]
+                })
+            })
     }
 
     render() {

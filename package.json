@@ -2,6 +2,7 @@
     "name": "clean-comic",
     "version": "0.1.0",
     "private": true,
+    "proxy": "http://localhost:3001/",
     "dependencies": {
         "body-parser": "^1.17.2",
         "cheerio": "^1.0.0-rc.1",

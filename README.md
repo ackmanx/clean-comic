@@ -8,6 +8,8 @@
 * Download img files to file system?
 * Mark as read?
 * Background service or on demand?
+* How to deploy?
+    * https://github.com/fullstackreact/food-lookup-demo#deploying
 
 
 # Features
