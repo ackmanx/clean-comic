@@ -1,0 +1,75 @@
+Cheerio calls needed for different feeds...
+
+
+------------------ $('p img').attr('src') ------------------
+Poorly Drawn Lines
+http://feeds.feedburner.com/PoorlyDrawnLines?format=xml
+
+Invisible Bread
+http://feeds.feedburner.com/InvisibleBread?format=xml
+
+Channelate
+http://feeds.feedburner.com/Channelate?format=xml
+Bonus panel requires scrape
+
+Fowl Language
+http://www.fowllanguagecomics.com/feed/
+Remove all query params from url to avoid resize
+Bonus panel requires scrape
+
+Safely Endangered
+http://www.safelyendangered.com/feed/
+
+War and Peas
+https://warandpeas.com/feed/
+Remove all query params from url to avoid resize
+
+
+------------------  $('img').attr('src') ------------------
+They Can Talk
+http://theycantalk.com/rss
+
+Mr Lovenstein
+http://www.mrlovenstein.com/rss.xml
+
+
+jake likes onions
+http://jakelikesonions.com/rss
+
+Sarah's Scribbles
+http://sarahcandersen.com/rss
+
+shitfest
+http://shitfestcomic.com/rss
+
+The Awkward Yeti
+http://larstheyeti.tumblr.com/rss
+
+Dilbert
+http://comicfeeds.chrisbenard.net/view/dilbert/default
+
+
+------------------  $('img') n elements ------------------
+Owlturd
+http://owlturd.com/rss
+
+dustinteractive
+http://dustinteractive.com/rss
+
+
+------------------  $('a img').attr('src')) ------------------
+Cat Versus Human
+http://feeds.feedburner.com/CatVersusHuman?format=xml
+
+
+------------------  $('p img.size-full') or $('p img.size-thumbnail') ------------------
+Extra Fabulous Comics
+http://www.extrafabulouscomics.com/feed/
+    * If there is no full, get the thumbnail src and remove the width/height suffix
+
+
+
+------------------  Straight-up Scrape ------------------
+Cyanide and Happiness
+http://feeds.feedburner.com/Explosm?format=xml
+`item.link` provides direct links to source pages where I can scrape for the image

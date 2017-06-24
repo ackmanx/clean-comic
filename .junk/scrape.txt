@@ -1,0 +1,5 @@
+These sites require me to get the HTML of the page and find the image myself
+This is a pain in the ass because I can't just check RSS feed for duplicates
+
+We the Robots
+http://www.wetherobots.com/wp-content/uploads/2017/06/wtr-2017-06-08-NameNotFound.jpg

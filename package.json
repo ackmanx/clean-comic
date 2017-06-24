@@ -1,18 +1,30 @@
 {
-  "name": "clean-comic",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1"
-  },
-  "devDependencies": {
-    "react-scripts": "1.0.7"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  }
+    "name": "clean-comic",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "body-parser": "^1.17.2",
+        "cheerio": "^1.0.0-rc.1",
+        "cookie-parser": "^1.4.3",
+        "debug": "~2.6.3",
+        "express": "~4.15.2",
+        "feedparser": "^2.2.1",
+        "hbs": "^4.0.1",
+        "less-middleware": "^2.2.0",
+        "morgan": "^1.8.2",
+        "react": "^15.6.1",
+        "react-dom": "^15.6.1",
+        "request": "^2.81.0",
+        "serve-favicon": "^2.4.3"
+    },
+    "devDependencies": {
+        "react-scripts": "1.0.7"
+    },
+    "scripts": {
+        "start-node": "node ./bin/www",
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test --env=jsdom",
+        "eject": "react-scripts eject"
+    }
 }
