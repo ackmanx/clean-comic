@@ -5,9 +5,17 @@ const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const lessMiddleware = require('less-middleware')
+const dirty = require('dirty')
+const debug = require('debug')('CleanComic:server')
+
+const C = require('./constants')
 
 const app = express()
 
+
+//----------------//----------------//----------------//----------------//----------------
+// Express setup
+//----------------//----------------//----------------//----------------//----------------
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
@@ -17,23 +25,30 @@ app.use(lessMiddleware(path.join(__dirname, 'public')))
 //todo: do i need to use this for prod only?
 // app.use(express.static(path.join(__dirname, 'public')))
 
+
+//----------------//----------------//----------------//----------------//----------------
+// Database setup
+//----------------//----------------//----------------//----------------//----------------
+dirty(C.DB_PATH)
+    .on('load', () => debug('Database loaded'))
+    .on('error', () => debug(error))
+
+
 //----------------//----------------//----------------//----------------//----------------
 // Endpoint registrations
 //----------------//----------------//----------------//----------------//----------------
 app.use(require('./routes/index'))
 
+
 //----------------//----------------//----------------//----------------//----------------
-// App Error Handlers
+// Error handlers
 //----------------//----------------//----------------//----------------//----------------
-//Catch 404 and forward to error handler
 app.use(function (req, res, next) {
     const err = new Error('Not Found')
     err.status = 404
     next(err)
 })
 
-// development error handler
-// will print stacktrace
 if (app.get('env') === 'development') {
     app.use(function (err, req, res, next) {
         res.status(err.status || 500)
@@ -44,8 +59,6 @@ if (app.get('env') === 'development') {
     })
 }
 
-// production error handler
-// no stacktraces leaked to user
 app.use(function (err, req, res, next) {
     res.status(err.status || 500)
     res.send({
