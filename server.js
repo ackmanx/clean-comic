@@ -8,16 +8,19 @@ const lessMiddleware = require('less-middleware')
 
 const app = express()
 
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'hbs')
-
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cookieParser())
 app.use(lessMiddleware(path.join(__dirname, 'public')))
-app.use(express.static(path.join(__dirname, 'public')))
 
+//todo: do i need to use this for prod only?
+// app.use(express.static(path.join(__dirname, 'public')))
+
+//----------------//----------------//----------------//----------------//----------------
+// Endpoint registrations
+//----------------//----------------//----------------//----------------//----------------
+app.use(require('./routes/index'))
 
 //----------------//----------------//----------------//----------------//----------------
 // App Error Handlers
