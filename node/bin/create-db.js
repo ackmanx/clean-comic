@@ -1,6 +1,7 @@
 const dirty = require('dirty')
-const db = dirty('../dirty.db')
+const fs = require('fs')
 
+const DB_PATH = '../dirty.db'
 const comics = [
     {
         name: 'Poorly Drawn Lines',
@@ -34,6 +35,13 @@ const comics = [
     }
 ]
 
+if (fs.existsSync(DB_PATH)) {
+    fs.unlinkSync(DB_PATH)
+}
+
+const db = dirty(DB_PATH)
+
 comics.forEach((comic, index) => {
+    comic.id = index
     db.set(index, comic)
 })
