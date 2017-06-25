@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {idGenerator} from './idGenerator'
+import {idGenerator} from '../util/idGenerator'
 import './App.css'
 
 class App extends Component {
