@@ -10,7 +10,7 @@
 * Background service or on demand?
 * How to deploy?
     * https://github.com/fullstackreact/food-lookup-demo#deploying
-
+* How to use LESS with create-react-app, if possible
 
 # Features
 

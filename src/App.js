@@ -1,12 +1,6 @@
 import React, {Component} from 'react'
+import {idGenerator} from './idGenerator'
 import './App.css'
-
-const id = (function* idMaker() {
-    let id = 0
-    while (true) {
-        yield id++
-    }
-})()
 
 class App extends Component {
     constructor() {
@@ -30,7 +24,7 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                {this.state.comics.map(comic => <div key={id.next().value}>{comic.name}</div>)}
+                {this.state.comics.map(comic => <div key={idGenerator.next().value}>{comic.name}</div>)}
             </div>
         )
     }
