@@ -1,19 +1,28 @@
 import React, {Component} from 'react'
 import './App.css'
 
+const id = (function* idMaker() {
+    let id = 0
+    while (true) {
+        yield id++
+    }
+})()
+
 class App extends Component {
     constructor() {
         super()
         this.state = {
-            comics: [{name: 'before-fetch'}]
+            comics: []
         }
     }
 
     componentDidMount() {
-        fetch(new Request('/blah'))
-            .then(res => {
-                this.setState({
-                    comics: [{name: 'after-fetch'}]
+        fetch(new Request('/comics'))
+            .then(response => {
+                response.json().then(json => {
+                    this.setState({
+                        comics: json
+                    })
                 })
             })
     }
@@ -21,7 +30,7 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                {this.state.comics.map(comic => <div key={new Date().getTime()}>{comic.name}</div>)}
+                {this.state.comics.map(comic => <div key={id.next().value}>{comic.name}</div>)}
             </div>
         )
     }
