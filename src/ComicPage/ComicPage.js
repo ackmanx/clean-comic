@@ -2,9 +2,27 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 
 class ComicPage extends Component {
+    state = {
+        comics: []
+    }
+
+    componentDidMount() {
+        fetch(new Request(`/comic/${this.props.match.params.id}`))
+            .then(response => response.json())
+            .then(comics => this.setState({comics}))
+    }
+
     render() {
         return (
-            <Link to='/'>Go back.</Link>
+            <div>
+                <Link to='/'>Go back.</Link>
+                {this.state.comics.map((comic, index) =>
+                    <div key={index}>
+                        <div>{comic.date}</div>
+                        <img src={comic.url} alt="haha"/>
+                    </div>
+                )}
+            </div>
         )
     }
 }
