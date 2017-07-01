@@ -18,7 +18,7 @@ class ComicPage extends Component {
                 <Link to='/'>Go back.</Link>
                 {this.state.comics.map((comic, index) =>
                     <div key={index}>
-                        <div>{comic.date}</div>
+                        <h1>{comic.date}</h1>
                         <img src={comic.url} alt="haha"/>
                     </div>
                 )}

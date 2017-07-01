@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const service = require('./service')
-
+const cheerio = require('cheerio')
 const dirty = require('dirty')
+
 const db = dirty('../dirty.db')
 
 router.get('/comics', function (req, res, next) {
@@ -16,8 +17,26 @@ router.get('/comics', function (req, res, next) {
 
 router.get('/comic/:id', function (req, res, next) {
     const id = req.params.id
-    const comics = service.getImageUrlsForComic(id)
-    res.send(comics)
+    service.getImageUrlsForComic(id)
+        .then(function (response) {
+            const comics = []
+            const $ = cheerio.load(response, {xmlMode: true})
+
+            $('item').each(function (index) {
+                const $item = $(this)
+                const $content = cheerio.load($item.find('content\\:encoded').text())
+                let comic = {
+                    date: $item.find('pubDate').text(),
+                    url: $content('p img').attr('src')
+                }
+                comics.push(comic)
+            })
+
+            res.send(comics)
+        })
+        .catch(function (error) {
+            console.error(error)
+        })
 })
 
 module.exports = router
