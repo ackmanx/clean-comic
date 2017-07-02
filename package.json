@@ -15,9 +15,25 @@
         "react": "^15.6.1",
         "react-dom": "^15.6.1",
         "react-router-dom": "^4.1.1",
-        "request": "^2.81.0",
         "request-promise-native": "^1.0.4",
         "serve-favicon": "^2.4.3"
+    },
+    "comments": {
+        "----node-dependencies---": "",
+        "body-parser": "middleware to easily get body off a request",
+        "cheerio": "jquery core library",
+        "cookie-parser": "middleware to easily get cookies off a request",
+        "debug": "logger",
+        "dirty": "object store database that uses plaintext files for storage",
+        "express": "server framework",
+        "less-middleware": "middleware for compiling less css files on the fly",
+        "morgan": "http request logger",
+        "request-promise-native": "uses nodes request module but returns promises",
+        "serve-favicon": "middleware to use favicons",
+        "----frontend-dependencies---": "",
+        "react": "frontend framework",
+        "react-dom": "used to attach react components to the dom",
+        "react-router-dom": "dom bindings for react-router"
     },
     "devDependencies": {
         "react-scripts": "1.0.7"
