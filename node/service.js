@@ -4,8 +4,9 @@ const dirty = require('dirty')
 
 const db = dirty('../dirty.db')
 
-function getImageUrlsForComic(id) {
+function fetchFeedForId(id) {
     let rssUrl
+
     db.forEach((pk, entry) => {
         if (entry.id === Number(id)) {
             rssUrl = entry.rss
@@ -15,4 +16,15 @@ function getImageUrlsForComic(id) {
     return requestPromise(rssUrl)
 }
 
-exports.getImageUrlsForComic = getImageUrlsForComic
+function fetchImage(imageUrl) {
+    const options = {
+        method: 'GET',
+        uri: imageUrl,
+        resolveWithFullResponse: true
+    }
+
+    return requestPromise(options)
+}
+
+exports.fetchFeedForId = fetchFeedForId
+exports.fetchImage = fetchImage
