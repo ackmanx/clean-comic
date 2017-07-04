@@ -1,7 +1,13 @@
+/*
+ * This script will build the database file from scratch
+ * It will delete the existing database and re-create it
+ * To add new comics to the application, simply add to the list and re-create the database
+ */
+
 const dirty = require('dirty')
 const fs = require('fs')
+const globals = require('../globals')
 
-const DB_PATH = '../dirty.db'
 const comics = [
     {
         name: 'Poorly Drawn Lines',
@@ -35,11 +41,11 @@ const comics = [
     }
 ]
 
-if (fs.existsSync(DB_PATH)) {
-    fs.unlinkSync(DB_PATH)
+if (fs.existsSync(globals.DB_PATH)) {
+    fs.unlinkSync(globals.DB_PATH)
 }
 
-const db = dirty(DB_PATH)
+const db = dirty(globals.DB_PATH)
 
 comics.forEach((comic, index) => {
     comic.id = index

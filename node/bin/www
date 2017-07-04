@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-const app = require('../server')
+const app = require('../../server')
 const debug = require('debug')('CleanComic:www')
 const http = require('http')
 
