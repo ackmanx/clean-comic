@@ -6,8 +6,9 @@
 
 const dirty = require('dirty')
 const fs = require('fs')
-const globals = require('../globals')
+const globals = require('../node/globals')
 
+//todo: for development i'm only testing 3. there are more of this type in rss.txt
 const comics = [
     {
         name: 'Poorly Drawn Lines',
@@ -22,21 +23,6 @@ const comics = [
     {
         name: 'Channelate',
         rss: 'http://feeds.feedburner.com/Channelate?format=xml',
-        imgSelector: 'P-IMG'
-    },
-    {
-        name: 'Fowl Language',
-        rss: 'http://www.fowllanguagecomics.com/feed/',
-        imgSelector: 'P-IMG'
-    },
-    {
-        name: 'Safely Endangered',
-        rss: 'http://www.safelyendangered.com/feed/',
-        imgSelector: 'P-IMG'
-    },
-    {
-        name: 'War and Peas',
-        rss: 'https://warandpeas.com/feed/',
         imgSelector: 'P-IMG'
     }
 ]

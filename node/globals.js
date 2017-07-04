@@ -4,4 +4,4 @@ const path = require('path')
 const projectRoot = path.join(__dirname, '..')
 
 exports.ROOT = projectRoot
-exports.DB_PATH = path.join(projectRoot, 'data-sources', 'database.db')
+exports.DB_PATH = path.join(projectRoot, 'data', 'database.db')

@@ -32,7 +32,6 @@ http://theycantalk.com/rss
 Mr Lovenstein
 http://www.mrlovenstein.com/rss.xml
 
-
 jake likes onions
 http://jakelikesonions.com/rss
 
