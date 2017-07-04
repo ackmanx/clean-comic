@@ -4,23 +4,21 @@ const requestPromise = require('request-promise-native');
 const dirty = require('dirty')
 const db = dirty(require('./globals').DB_PATH)
 
+//Module includes
+const dao = require('./dao')
+
 /*
- * Gets a comic record from the DB and makes a request for the RSS feed in the record
- * Returns a promise for the feed request
+ * Returns a list of all comics
  */
-exports.fetchFeedForId = function fetchFeedForId(id) {
-    let rssUrl
+exports.fetchComicsList = function fetchComicsList() {
+    const comics = []
+    db.forEach((id, entry) => comics.push({
+        id: entry.id,
+        name: entry.name
+    }))
+    return comics
+}
 
-    db.forEach((pk, entry) => {
-        if (entry.id === Number(id)) {
-            rssUrl = entry.rss
-        }
-    })
-
-    if (!rssUrl) {
-        //todo: this will kill the node server so don't do it
-        throw new Error('How did you get a comic ID for one that does not exist?')
-    }
-
-    return requestPromise(rssUrl)
+exports.fetchComic = function fetchComic(comicId) {
+    return dao.find(comicId)
 }

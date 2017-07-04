@@ -3,23 +3,25 @@ import {Link} from 'react-router-dom'
 
 class ComicPage extends Component {
     state = {
-        comics: []
+        comic: {comics: []}
     }
 
     componentDidMount() {
         fetch(new Request(`/comic/${this.props.match.params.id}`))
             .then(response => response.json())
-            .then(comics => this.setState({comics}))
+            .then(comic => this.setState({comic}))
     }
 
     render() {
         return (
             <div>
                 <Link to='/'>Go back.</Link>
-                {this.state.comics.map((comic, index) =>
+                <h1>{this.state.comic.name}</h1>
+                {this.state.comic.comics.map((comic, index) =>
                     <div key={index}>
-                        <h1>{comic.date}</h1>
-                        <img src={comic.url} alt="haha"/>
+                        <h2>{comic.date}</h2>
+                        <div>Read: {String(comic.read)}</div>
+                        <img src={comic.path} alt="haha"/>
                     </div>
                 )}
             </div>
