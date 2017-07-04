@@ -1,8 +1,11 @@
+const globals = require('./globals')
+
 //Library includes
 const debug = require('debug')('CleanComic:fetch')
-const requestPromise = require('request-promise-native');
+const requestPromise = require('request-promise-native')
+const download = require('image-downloader')
 const dirty = require('dirty')
-const db = dirty(require('./globals').DB_PATH)
+const db = dirty(globals.DB_PATH)
 
 //Module includes
 const dao = require('./dao')
@@ -19,6 +22,28 @@ exports.fetchComicsList = function fetchComicsList() {
     return comics
 }
 
+/*
+ * Returns a single comic object
+ */
 exports.fetchComic = function fetchComic(comicId) {
     return dao.find(comicId)
+}
+
+/*
+ * Downloads image file from a URL, saving it to images root
+ */
+exports.downloadImage = function (url) {
+    const options = {
+        url: url,
+        dest: globals.IMAGES_ROOT
+    }
+
+    download.image(options)
+        .then(function () {
+            debug(`image downloaded! ${JSON.stringify(options)}`)
+        })
+        .catch(function (err) {
+            debug(`image download failed! ${JSON.stringify(options)}`)
+            debug(err)
+        })
 }
