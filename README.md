@@ -4,6 +4,13 @@
 1. User clicks a comic
 1. Page displays all comics in that feed
 
+# Glossary
+Code should adhere to this naming because it's extremely easy to use these terms in varying ways. `comic` can easily be understood to mean any series of comics or a single episode within a series.  
+
+* `comic` A single series. Example: Dilbert
+* `comics` Generalized word referring to multiple series of comics. Example: Dilbert, Channelate, etc
+* `episode` An entry in a series. Example: June 1st, 2017 and its corresponding image
+
 # Questions
 * How to deploy?
     * https://github.com/fullstackreact/food-lookup-demo#deploying

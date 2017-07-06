@@ -18,6 +18,7 @@
         "react-dom": "^15.6.1",
         "react-router-dom": "^4.1.1",
         "request-promise-native": "^1.0.4",
+        "sanitize-filename": "^1.6.1",
         "serve-favicon": "^2.4.3"
     },
     "comments": {
@@ -33,6 +34,7 @@
         "moment": "date/time library",
         "morgan": "http request logger",
         "request-promise-native": "uses nodes request module but returns promises",
+        "sanitize-filename": "self-explanatory",
         "serve-favicon": "middleware to use favicons",
         "----frontend-dependencies---": "",
         "react": "frontend framework",
