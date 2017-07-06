@@ -30,7 +30,7 @@ if (process.env.NODE_ENV === 'production') {
 // Database setup
 //----------------//----------------//----------------//----------------//----------------
 dirty(require('./node/globals').DB_PATH)
-    .on('load', () => debug('Database loaded'))
+    .on('load', (count) => debug(`Database loaded with ${count} records`))
     .on('error', () => debug(error))
 
 
