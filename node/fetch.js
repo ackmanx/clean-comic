@@ -42,7 +42,7 @@ exports.downloadImage = function (folder, file, url) {
  */
 exports.getHeaders = function (url) {
     return requestPromise(url, {method: 'HEAD'})
-        .catch(err => console.error(err))
+        .catch(err => debug(err))
 }
 
 /*

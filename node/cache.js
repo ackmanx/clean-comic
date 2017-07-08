@@ -16,16 +16,15 @@ const fetch = require('./fetch')
  * Goes through each feed record, checks for comic updates and downloads them
  */
 exports.update = function cache() {
-    //todo: loop
-    const comicRecord = dao.find(1)
-
-    fetch.fetchFeed(comicRecord.rss)
-        .then(feed => {
-            const comic = {name: comicRecord.name}
-            comic.episodes = getComicFromFeed(feed)
-            download(comic)
-        })
-        .catch(err => debug(err))
+    dao.getAllComics().forEach(comicRecord => {
+        fetch.fetchFeed(comicRecord.rss)
+            .then(feed => {
+                const comic = {name: comicRecord.name}
+                comic.episodes = getComicFromFeed(feed)
+                download(comic)
+            })
+            .catch(err => debug(err))
+    })
 }
 
 /*

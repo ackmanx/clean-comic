@@ -20,3 +20,9 @@ exports.find = function (comicId) {
 
     return comic
 }
+
+exports.getAllComics = function () {
+    let comics = []
+    db.forEach((id, entry) => comics.push(entry))
+    return comics
+}
