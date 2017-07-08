@@ -1,27 +1,28 @@
 const globals = require('./globals')
 
 //Library includes
-const debug = require('debug')('CleanComic:cache')
 const cheerio = require('cheerio')
-const sanitize = require('sanitize-filename')
-const path = require('path')
+const debug = require('debug')('CleanComic:cache')
+const mime = require('mime-types')
 const moment = require('moment')
+const path = require('path')
+const sanitize = require('sanitize-filename')
 
 //Module includes
-const fetch = require('./fetch')
 const dao = require('./dao')
+const fetch = require('./fetch')
 
 /*
  * Goes through each feed record, checks for comic updates and downloads them
  */
 exports.update = function cache() {
     //todo: loop
-    const comicRecord = dao.find(0)
+    const comicRecord = dao.find(1)
 
     fetch.fetchFeed(comicRecord.rss)
         .then(feed => {
             const comic = {name: comicRecord.name}
-            comic.episodes = parseFeedResponse(feed)
+            comic.episodes = getComicFromFeed(feed)
             download(comic)
         })
         .catch(err => debug(err))
@@ -30,8 +31,7 @@ exports.update = function cache() {
 /*
  * Goes through XML feed and returns list of comic dates and URLs
  */
-//todo: use better name
-function parseFeedResponse(xmlFeed) {
+function getComicFromFeed(xmlFeed) {
     const comics = []
     const $ = cheerio.load(xmlFeed, {xmlMode: true})
 
@@ -55,10 +55,12 @@ function parseFeedResponse(xmlFeed) {
  */
 function download(comic) {
     comic.episodes.forEach(episode => {
-        const folderName = sanitize(comic.name).replace(/ /g, '_')
-        const filename = moment(episode.date).format('Y-MM-DD')
-        //todo: extension needed
-        const fullPath = path.join(folderName, filename)
-        debug(fullPath)
+        fetch.getHeaders(episode.url)
+            .then(response => {
+                const extension = mime.extension(response['content-type'])
+                const folder = sanitize(comic.name).replace(/ /g, '_')
+                const file = `${moment(episode.date).format('Y-MM-DD')}.${extension}`
+                fetch.downloadImage(folder, file, episode.url)
+            })
     })
 }

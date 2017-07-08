@@ -13,8 +13,7 @@ http://feeds.feedburner.com/Channelate?format=xml
 Bonus panel requires scrape
 
 Fowl Language
-http://www.fowllanguagecomics.com/feed/
-Remove all query params from url to avoid resize
+http://fowllanguagecomics.tumblr.com/rss
 Bonus panel requires scrape
 
 Safely Endangered

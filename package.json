@@ -12,6 +12,7 @@
         "express": "~4.15.2",
         "image-downloader": "^3.2.2",
         "less-middleware": "^2.2.0",
+        "mime-types": "latest",
         "moment": "^2.18.1",
         "morgan": "^1.8.2",
         "react": "^15.6.1",
