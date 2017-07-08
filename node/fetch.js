@@ -26,11 +26,13 @@ exports.downloadImage = function (folder, file, url) {
     }
 
     if (!fs.existsSync(absoluteFolder)) {
+        debug(`Folder ${absoluteFolder} does not exist. Creating.`)
         fs.mkdirSync(absoluteFolder)
     }
 
     const options = {url: url, dest: absoluteFile}
     download.image(options)
+        .then(() => debug(`Image ${options.url} successfully downloaded!`))
         .catch(function (err) {
             debug(`Image download failed! ${JSON.stringify(options)}`)
             debug(err)

@@ -1,12 +1,15 @@
 const debug = require('debug')('CleanComic:server')
-const express = require('express')
-const path = require('path')
-const favicon = require('serve-favicon')
-const logger = require('morgan')
-const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
-const lessMiddleware = require('less-middleware')
+const cookieParser = require('cookie-parser')
+const CronJob = require('cron').CronJob
 const dirty = require('dirty')
+const express = require('express')
+const favicon = require('serve-favicon')
+const lessMiddleware = require('less-middleware')
+const logger = require('morgan')
+const path = require('path')
+
+const cache = require('./node/cache')
 
 
 //----------------//----------------//----------------//----------------//----------------
@@ -38,6 +41,15 @@ dirty(require('./node/globals').DB_PATH)
 // Endpoint registrations
 //----------------//----------------//----------------//----------------//----------------
 app.use(require('./node/routes'))
+
+
+//----------------//----------------//----------------//----------------//----------------
+// Cron setup
+//----------------//----------------//----------------//----------------//----------------
+//todo: delete test cron
+//todo: think about if we can check for image existence without doing a HEAD request
+new CronJob('*/30 * * * * *', cache.update, null, true, 'America/Chicago')
+// new CronJob('* * */12 * * *', cache.update, null, true, 'America/Chicago')
 
 
 //----------------//----------------//----------------//----------------//----------------
