@@ -28,5 +28,6 @@ exports.getAllComics = function () {
 }
 
 exports.save = function (comic) {
+    //todo: pretty sure this isn't working right... saving comic without an id
     db.set(comic.id, comic)
 }

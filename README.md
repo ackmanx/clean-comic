@@ -19,8 +19,6 @@ Code should adhere to this naming because it's extremely easy to use these terms
 ### Priority - High
 * Populate UI from image paths from the db and not the feed
     * This sets up add metadata to each comic image too
-* Download images on a schedule 
-    *Background service: npm install --save node-cron
 
 
 ### Priority - Medium

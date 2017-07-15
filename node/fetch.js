@@ -16,7 +16,6 @@ const dao = require('./dao')
  * Downloads image file from a URL, saving it to images root
  */
 exports.downloadImage = function (folder, file, url) {
-
     const absoluteFolder = path.join(globals.IMAGES_ROOT, folder)
     const absoluteFile = path.join(globals.IMAGES_ROOT, folder, file)
 
