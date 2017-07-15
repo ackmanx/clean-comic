@@ -62,9 +62,14 @@ function downloadAndSave(comic) {
                 const folder = sanitize(comic.name).replace(/ /g, '_')
                 const file = `${moment(episode.date).format('Y-MM-DD')}.${extension}`
                 const promise = fetch.downloadImage(folder, file, episode.url)
-                promise.then(() => {
-                    dao.save(comic)
-                })
+
+                //Being we skip images we already have, no promise may be returned
+                if (promise) {
+                    promise.then(() => {
+                        dao.save(comic)
+                    })
+                }
             })
+            .catch(err => debug(err))
     })
 }

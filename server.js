@@ -46,10 +46,7 @@ app.use(require('./node/routes'))
 //----------------//----------------//----------------//----------------//----------------
 // Cron setup
 //----------------//----------------//----------------//----------------//----------------
-//todo: delete test cron
-//todo: think about if we can check for image existence without doing a HEAD request
-new CronJob('*/30 * * * * *', cache.update, null, true, 'America/Chicago')
-// new CronJob('* * */12 * * *', cache.update, null, true, 'America/Chicago')
+new CronJob('* * */12 * * *', cache.update, null, true, 'America/Chicago')
 
 
 //----------------//----------------//----------------//----------------//----------------
