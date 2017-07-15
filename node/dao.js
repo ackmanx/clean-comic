@@ -26,3 +26,7 @@ exports.getAllComics = function () {
     db.forEach((id, entry) => comics.push(entry))
     return comics
 }
+
+exports.save = function (comic) {
+    db.set(comic.id, comic)
+}

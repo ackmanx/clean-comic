@@ -16,12 +16,14 @@ const fetch = require('./fetch')
  * Goes through each feed record, checks for comic updates and downloads them
  */
 exports.update = function cache() {
+    debug('Running cache update')
     dao.getAllComics().forEach(comicRecord => {
+        debug(`Updating ${comicRecord.name}`)
         fetch.fetchFeed(comicRecord.rss)
             .then(feed => {
                 const comic = {name: comicRecord.name}
                 comic.episodes = getComicFromFeed(feed)
-                download(comic)
+                downloadAndSave(comic)
             })
             .catch(err => debug(err))
     })
@@ -52,14 +54,17 @@ function getComicFromFeed(xmlFeed) {
 /*
  * Takes array of comics, determines filename for images and downloads
  */
-function download(comic) {
+function downloadAndSave(comic) {
     comic.episodes.forEach(episode => {
         fetch.getHeaders(episode.url)
             .then(response => {
                 const extension = mime.extension(response['content-type'])
                 const folder = sanitize(comic.name).replace(/ /g, '_')
                 const file = `${moment(episode.date).format('Y-MM-DD')}.${extension}`
-                fetch.downloadImage(folder, file, episode.url)
+                const promise = fetch.downloadImage(folder, file, episode.url)
+                promise.then(() => {
+                    dao.save(comic)
+                })
             })
     })
 }

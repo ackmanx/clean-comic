@@ -31,7 +31,7 @@ exports.downloadImage = function (folder, file, url) {
     }
 
     const options = {url: url, dest: absoluteFile}
-    download.image(options)
+    return download.image(options)
         .then(() => debug(`Image ${options.url} successfully downloaded!`))
         .catch(function (err) {
             debug(`Image download failed! ${JSON.stringify(options)}`)
