@@ -46,7 +46,11 @@ app.use(require('./node/routes'))
 //----------------//----------------//----------------//----------------//----------------
 // Cron setup
 //----------------//----------------//----------------//----------------//----------------
-new CronJob('* * */12 * * *', cache.update, null, true, 'America/Chicago')
+//2AM each day
+new CronJob('0 2 * * *', cache.updateFeedCache, null, true, 'America/Chicago')
+
+//3AM each day
+new CronJob('0 3 * * *', cache.updateImageCache, null, true, 'America/Chicago')
 
 
 //----------------//----------------//----------------//----------------//----------------

@@ -40,7 +40,7 @@ exports.downloadImage = function (folder, file, url) {
 /*
  * Make a generic HEAD request
  */
-exports.getHeaders = function (url) {
+exports.getRequestHeaders = function (url) {
     return requestPromise(url, {method: 'HEAD'})
         .catch(err => debug(err))
 }

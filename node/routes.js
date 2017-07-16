@@ -26,9 +26,17 @@ router.get('/comic/:id', function (req, res, next) {
 /*
  * Forces the application to check all feeds and download new comics
  */
-router.post('/update', function (req, res, next) {
-    cache.update()
+router.post('/update-feed', function (req, res, next) {
+    cache.updateFeedCache()
     res.send('Updating all feeds now. Check server logs for progress.')
+})
+
+/*
+ * Forces the application to check all feeds and download new comics
+ */
+router.post('/update-images', function (req, res, next) {
+    cache.updateImageCache()
+    res.send('Downloading all new images now. Check server logs for progress.')
 })
 
 module.exports = router

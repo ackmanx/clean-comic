@@ -49,6 +49,6 @@ exports.getAllComics = function getAllComics() {
  * Supposed to save a Comic object to the database using the comic ID as the PK
  */
 exports.save = function save(comic) {
-    //todo: pretty sure this isn't working right... saving comic without an id
+    debug(`Saving ${comic.name} to database`)
     db.set(comic.id, comic)
 }

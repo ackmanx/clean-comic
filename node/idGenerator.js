@@ -1,4 +1,4 @@
-export const idGenerator = (function* idMaker() {
+module.exports = (function* idGenerator() {
     let id = 0
     while (true) {
         yield id++
