@@ -25,21 +25,9 @@ exports.updateFeedCache = function cache() {
         fetch.fetchFeed(comic.rss)
             .then(xml => {
                 getEpisodesFromFeed(comic, xml)
-                dao.save(comic)
-                // determineFilePathInfo(comic)
+                determineFilePathInfoAndSave(comic)
             })
             .catch(err => debug(err))
-    })
-}
-
-/*
- * Goes through each non-downloaded image record and downloads it to image cache
- */
-exports.updateImageCache = function () {
-    debug('Running cache image update')
-
-    dao.getAllComics().forEach(comic => {
-        debug(`Downloading new images for ${comic.name}`)
     })
 }
 
@@ -65,22 +53,45 @@ function getEpisodesFromFeed(comic, xmlFeed) {
     })
 }
 
-// /*
-//  * Builds folder name, file name, extension and adds to Episode
-//  * Mutates passed Comic
-//  */
-// function determineFilePathInfo(comic) {
-//     comic.episodes.forEach(episode => {
-//         fetch.getRequestHeaders(episode.url)
-//             .then(response => {
-//                 episode.extension = mime.extension(response['content-type'])
-//                 episode.folderName = sanitize(comic.name).replace(/ /g, '_')
-//                 episode.fileName = episode.date
-//                 dao.save(comic)
-//             })
-//             .catch(err => debug(err))
-//     })
-// }
+/*
+ * Builds folder name, file name, extension and adds to Episode
+ * Mutates passed Comic and saves to database
+ */
+function determineFilePathInfoAndSave(comic) {
+    const heads = []
+
+    comic.episodes.forEach(episode => {
+        if (episode.isDownloaded) {
+            debug(`Episode ${episode.date} is already downloaded. Skipping HEAD for file path info`)
+        }
+        else {
+            debug(`Getting file path info for ${episode.date} using HEAD request`)
+            const promise = fetch.head(episode.url)
+                .then(response => {
+                    episode.extension = mime.extension(response['content-type'])
+                    episode.folderName = sanitize(comic.name).replace(/ /g, '_')
+                    episode.fileName = episode.date
+                })
+                .catch(err => debug(err))
+            heads.push(promise)
+        }
+    })
+
+    Promise.all(heads)
+        .then(() => dao.save(comic))
+        .catch(err => debug(err))
+}
+
+/*
+ * Goes through each non-downloaded image record and downloads it to image cache
+ */
+exports.updateImageCache = function () {
+    debug('Running cache image update')
+
+    dao.getAllComics().forEach(comic => {
+        debug(`Downloading new images for ${comic.name}`)
+    })
+}
 
 // /*
 //  * Takes a Comic, determines filename for images and downloads
@@ -89,7 +100,7 @@ function getEpisodesFromFeed(comic, xmlFeed) {
 //     comic.episodes.forEach(episode => {
 //
 //         if (!episode.extension) {
-//             fetch.getRequestHeaders(episode.url)
+//             fetch.head(episode.url)
 //                 .then(response => {
 //                     episode.extension = mime.extension(response['content-type'])
 //                     episode.folderName = sanitize(comic.name).replace(/ /g, '_')
