@@ -14,6 +14,9 @@ Code should adhere to this naming because it's extremely easy to use these terms
 # Questions
 * How to deploy?
     * https://github.com/fullstackreact/food-lookup-demo#deploying
+* What to do when an image download fails?
+    * Retry? Flag episode and report to UI?
+    * How to resolve?
 
 # Features
 ### Priority - High

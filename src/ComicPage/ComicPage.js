@@ -23,7 +23,7 @@ class ComicPage extends Component {
                     <div key={index}>
                         <h2>{episode.date}</h2>
                         <div>Read: {String(episode.read)}</div>
-                        <img src={episode.path} alt="haha"/>
+                        <img src={episode.localPath} alt="haha"/>
                     </div>
                 )}
             </div>

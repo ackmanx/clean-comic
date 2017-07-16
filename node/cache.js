@@ -70,6 +70,7 @@ function determineFilePathInfoAndSave(comic) {
                     episode.extension = mime.extension(response['content-type'])
                     episode.folderName = sanitize(comic.name).replace(/ /g, '_')
                     episode.fileName = episode.date
+                    episode.localPath = `/images/${episode.folderName}/${episode.fileName}.${episode.extension}`
                     episode.hasFileInfo = true
                 })
                 .catch(err => debug(err))

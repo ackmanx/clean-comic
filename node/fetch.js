@@ -16,15 +16,19 @@ const requestPromise = require('request-promise-native')
  */
 exports.downloadImage = function (episode) {
     const absoluteFolder = path.join(globals.IMAGES_ROOT, episode.folderName)
+    const absolutePath = path.join(absoluteFolder, `${episode.fileName}.${episode.extension}`)
 
     if (!fs.existsSync(absoluteFolder)) {
         debug(`Folder ${absoluteFolder} does not exist. Creating.`)
         fs.mkdirSync(absoluteFolder)
     }
 
-    const options = {url: episode.url, dest: path.join(absoluteFolder, episode.fileName)}
+    const options = {
+        url: episode.url,
+        dest: absolutePath
+    }
 
-    debug(`Downloading ${episode.folderName}/${episode.fileName} at ${episode.url}`)
+    debug(`Downloading ${episode.url} as ${absolutePath}`)
 
     return download.image(options)
         .then(() => debug(`Image ${options.url} successfully downloaded!`))
