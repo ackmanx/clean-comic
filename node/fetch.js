@@ -10,7 +10,6 @@ const path = require('path')
 const requestPromise = require('request-promise-native')
 
 //Module includes
-const dao = require('./dao')
 
 /*
  * Downloads image file from a URL, saving it to images root
@@ -39,30 +38,11 @@ exports.downloadImage = function (folder, file, url) {
 }
 
 /*
- * Make a HEAD request
+ * Make a generic HEAD request
  */
 exports.getHeaders = function (url) {
     return requestPromise(url, {method: 'HEAD'})
         .catch(err => debug(err))
-}
-
-/*
- * Returns a list of all comics
- */
-exports.fetchComicsList = function fetchComicsList() {
-    const comics = []
-    db.forEach((id, entry) => comics.push({
-        id: entry.id,
-        name: entry.name
-    }))
-    return comics
-}
-
-/*
- * Returns a single comic object
- */
-exports.fetchComic = function fetchComic(comicId) {
-    return dao.find(comicId)
 }
 
 /*

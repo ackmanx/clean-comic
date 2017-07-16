@@ -11,6 +11,7 @@ const sanitize = require('sanitize-filename')
 //Module includes
 const dao = require('./dao')
 const fetch = require('./fetch')
+const Episode = require('./dto/Episode')
 
 /*
  * Goes through each feed record, checks for comic updates and downloads them
@@ -18,13 +19,12 @@ const fetch = require('./fetch')
 exports.update = function cache() {
     debug('Running cache update')
 
-    dao.getAllComics().forEach(comicRecord => {
-        debug(`Updating ${comicRecord.name}`)
+    dao.getAllComics().forEach(comic => {
+        debug(`Updating ${comic.name}`)
 
-        fetch.fetchFeed(comicRecord.rss)
+        fetch.fetchFeed(comic.rss)
             .then(feed => {
-                const comic = {name: comicRecord.name}
-                comic.episodes = getComicFromFeed(feed)
+                comic.episodes = getEpisodesFromFeed(feed)
                 //todo: save this shit to the db before downloading, god damnit
                 downloadAndSave(comic)
             })
@@ -33,10 +33,10 @@ exports.update = function cache() {
 }
 
 /*
- * Goes through XML feed and returns list of comic dates and URLs
+ * Goes through XML feed and returns list of episodes
  */
-function getComicFromFeed(xmlFeed) {
-    const comics = []
+function getEpisodesFromFeed(xmlFeed) {
+    const episodes = []
     const $ = cheerio.load(xmlFeed, {xmlMode: true})
 
     $('item').each(function () {
@@ -44,19 +44,19 @@ function getComicFromFeed(xmlFeed) {
         const $content = cheerio.load($item.find('content\\:encoded').text())
         const rawDate = $item.find('pubDate').text()
 
-        comics.push({
+        const episode = new Episode({
             date: moment(rawDate).format('Y-MM-DD'),
-            path: '',
+            path: '', //todo: put filename creation here
             url: $content('p img').attr('src')
         })
+        episodes.push(episode)
     })
 
-    //todo: this returns episodes not fucking comics, wtf was i thinking
-    return comics
+    return episodes
 }
 
 /*
- * Takes array of comics, determines filename for images and downloads
+ * Takes a Comic, determines filename for images and downloads
  */
 function downloadAndSave(comic) {
     comic.episodes.forEach(episode => {
@@ -71,6 +71,7 @@ function downloadAndSave(comic) {
                 //Being we skip images we already have, no promise may be returned
                 if (promise) {
                     promise
+                        //todo: this save shit doesn't even fucking work
                         .then(() => dao.save(comic))
                         .catch(err => debug(err))
                 }

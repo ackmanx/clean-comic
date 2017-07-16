@@ -3,7 +3,13 @@ const debug = require('debug')('CleanComic:dao')
 const dirty = require('dirty')
 const db = dirty(require('./globals').DB_PATH)
 
-exports.find = function (comicId) {
+//Module includes
+const Comic = require('./dto/Comic')
+
+/*
+ * Find a single Comic object from the database and returns it
+ */
+exports.find = function find(comicId) {
     let comic
     comicId = Number.parseInt(comicId)
 
@@ -14,20 +20,35 @@ exports.find = function (comicId) {
 
     db.forEach((id, entry) => {
         if (id === comicId) {
-            comic = entry
+            comic = new Comic(entry)
         }
     })
 
     return comic
 }
 
-exports.getAllComics = function () {
+/*
+ * Returns a list of all comics
+ */
+exports.getComicsNameList = function fetchComicsList() {
+    const list = []
+    db.forEach((id, entry) => list.push({id: entry.id, name: entry.name}))
+    return list
+}
+
+/*
+ * Returns an array of all Comic objects in the database
+ */
+exports.getAllComics = function getAllComics() {
     let comics = []
-    db.forEach((id, entry) => comics.push(entry))
+    db.forEach((id, entry) => comics.push(new Comic(entry)))
     return comics
 }
 
-exports.save = function (comic) {
+/*
+ * Supposed to save a Comic object to the database using the comic ID as the PK
+ */
+exports.save = function save(comic) {
     //todo: pretty sure this isn't working right... saving comic without an id
     db.set(comic.id, comic)
 }

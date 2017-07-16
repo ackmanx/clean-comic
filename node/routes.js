@@ -3,7 +3,7 @@ const debug = require('debug')('CleanComic:routes')
 const router = require('express').Router()
 
 //Module includes
-const fetch = require('./fetch')
+const dao = require('./dao')
 const cache = require('./cache')
 
 /*
@@ -11,7 +11,7 @@ const cache = require('./cache')
  * Returns array of objects
  */
 router.get('/comics', function (req, res, next) {
-    res.send(fetch.fetchComicsList())
+    res.send(dao.getComicsNameList())
 })
 
 /*
@@ -20,7 +20,7 @@ router.get('/comics', function (req, res, next) {
  */
 router.get('/comic/:id', function (req, res, next) {
     const id = req.params.id
-    res.send(fetch.fetchComic(id))
+    res.send(dao.find(id))
 })
 
 /*
