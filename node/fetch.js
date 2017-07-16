@@ -14,21 +14,18 @@ const requestPromise = require('request-promise-native')
 /*
  * Downloads image file from a URL, saving it to images root
  */
-exports.downloadImage = function (folder, file, url) {
-    const absoluteFolder = path.join(globals.IMAGES_ROOT, folder)
-    const absoluteFile = path.join(globals.IMAGES_ROOT, folder, file)
-
-    if (fs.existsSync(absoluteFile)) {
-        debug(`File ${absoluteFile} already exists. Skipping.`)
-        return
-    }
+exports.downloadImage = function (episode) {
+    const absoluteFolder = path.join(globals.IMAGES_ROOT, episode.folderName)
 
     if (!fs.existsSync(absoluteFolder)) {
         debug(`Folder ${absoluteFolder} does not exist. Creating.`)
         fs.mkdirSync(absoluteFolder)
     }
 
-    const options = {url: url, dest: absoluteFile}
+    const options = {url: episode.url, dest: path.join(absoluteFolder, episode.fileName)}
+
+    debug(`Downloading ${episode.folderName}/${episode.fileName} at ${episode.url}`)
+
     return download.image(options)
         .then(() => debug(`Image ${options.url} successfully downloaded!`))
         .catch(function (err) {
@@ -41,6 +38,7 @@ exports.downloadImage = function (folder, file, url) {
  * Make a generic HEAD request
  */
 exports.head = function (url) {
+    debug(`HEAD request sent for ${url}`)
     return requestPromise(url, {method: 'HEAD'})
         .catch(err => debug(err))
 }
@@ -49,6 +47,6 @@ exports.head = function (url) {
  * Makes a request for the RSS feed
  * Returns a promise for the feed request
  */
-exports.fetchFeed = function fetchFeedForId(rssUrl) {
+exports.getFeed = function fetchFeedForId(rssUrl) {
     return requestPromise(rssUrl)
 }

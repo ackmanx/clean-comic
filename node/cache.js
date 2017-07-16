@@ -22,7 +22,7 @@ exports.updateFeedCache = function cache() {
     dao.getAllComics().forEach(comic => {
         debug(`Updating ${comic.name} with latest image URLs`)
 
-        fetch.fetchFeed(comic.rss)
+        fetch.getFeed(comic.rss)
             .then(xml => {
                 getEpisodesFromFeed(comic, xml)
                 determineFilePathInfoAndSave(comic)
@@ -58,26 +58,28 @@ function getEpisodesFromFeed(comic, xmlFeed) {
  * Mutates passed Comic and saves to database
  */
 function determineFilePathInfoAndSave(comic) {
-    const heads = []
+    const headRequests = []
 
     comic.episodes.forEach(episode => {
-        if (episode.isDownloaded) {
-            debug(`Episode ${episode.date} is already downloaded. Skipping HEAD for file path info`)
+        if (episode.hasFileInfo) {
+            debug(`Episode ${episode.date} file path info already exists. Skipping HEAD for file path info`)
         }
         else {
-            debug(`Getting file path info for ${episode.date} using HEAD request`)
             const promise = fetch.head(episode.url)
                 .then(response => {
                     episode.extension = mime.extension(response['content-type'])
                     episode.folderName = sanitize(comic.name).replace(/ /g, '_')
                     episode.fileName = episode.date
+                    episode.hasFileInfo = true
                 })
                 .catch(err => debug(err))
-            heads.push(promise)
+            headRequests.push(promise)
         }
     })
 
-    Promise.all(heads)
+    debug(`Waiting for ${headRequests.length} HEAD requests to resolve before saving ${comic.name} to database`)
+
+    Promise.all(headRequests)
         .then(() => dao.save(comic))
         .catch(err => debug(err))
 }
@@ -90,34 +92,30 @@ exports.updateImageCache = function () {
 
     dao.getAllComics().forEach(comic => {
         debug(`Downloading new images for ${comic.name}`)
+        downloadAndSave(comic)
     })
 }
 
-// /*
-//  * Takes a Comic, determines filename for images and downloads
-//  */
-// function downloadAndSave(comic) {
-//     comic.episodes.forEach(episode => {
-//
-//         if (!episode.extension) {
-//             fetch.head(episode.url)
-//                 .then(response => {
-//                     episode.extension = mime.extension(response['content-type'])
-//                     episode.folderName = sanitize(comic.name).replace(/ /g, '_')
-//                     episode.fileName = episode.date
-//                     dao.save(comic)
-//                 })
-//                 .catch(err => debug(err))
-//         }
-//
-//         const promise = fetch.downloadImage(folder, file, episode.url)
-//
-//         //Being we skip images we already have, no promise may be returned
-//         if (promise) {
-//             promise
-//             //todo: this save shit doesn't even fucking work
-//                 .then(() => dao.save(comic))
-//                 .catch(err => debug(err))
-//         }
-//     })
-// }
+/*
+ * Takes a Comic and downloads the episodes, saving the status to the database
+ */
+function downloadAndSave(comic) {
+    const getRequests = []
+
+    comic.episodes.forEach(episode => {
+        if (episode.isDownloaded) {
+            debug(`Episode ${episode.date} is already downloaded. Skipping.`)
+        }
+        else {
+            const promise = fetch.downloadImage(episode)
+                .then(response => episode.isDownloaded = true)
+            getRequests.push(promise)
+        }
+    })
+
+    debug(`Waiting for ${getRequests.length} GET requests to resolve before saving ${comic.name} to database`)
+
+    Promise.all(getRequests)
+        .then(() => dao.save(comic))
+        .catch(err => debug(err))
+}
