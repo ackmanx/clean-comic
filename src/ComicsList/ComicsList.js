@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 
-class ComicList extends Component {
+class ComicsList extends Component {
     state = {
         comics: []
     }
@@ -27,4 +27,4 @@ class ComicList extends Component {
     }
 }
 
-export default ComicList
+export default ComicsList

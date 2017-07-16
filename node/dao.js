@@ -28,7 +28,7 @@ exports.find = function find(comicId) {
 }
 
 /*
- * Returns a list of all comics
+ * Returns a list of all comic names
  */
 exports.getComicsNameList = function fetchComicsList() {
     const list = []

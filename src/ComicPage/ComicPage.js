@@ -3,7 +3,9 @@ import {Link} from 'react-router-dom'
 
 class ComicPage extends Component {
     state = {
-        comic: {comics: []}
+        comic: {
+            episodes: []
+        }
     }
 
     componentDidMount() {
@@ -17,11 +19,11 @@ class ComicPage extends Component {
             <div>
                 <Link to='/'>Go back.</Link>
                 <h1>{this.state.comic.name}</h1>
-                {this.state.comic.comics.map((comic, index) =>
+                {this.state.comic.episodes.map((episode, index) =>
                     <div key={index}>
-                        <h2>{comic.date}</h2>
-                        <div>Read: {String(comic.read)}</div>
-                        <img src={comic.path} alt="haha"/>
+                        <h2>{episode.date}</h2>
+                        <div>Read: {String(episode.read)}</div>
+                        <img src={episode.path} alt="haha"/>
                     </div>
                 )}
             </div>
