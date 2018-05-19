@@ -1,5 +1,9 @@
 Cheerio calls needed for different feeds...
 
+
+The Gentleman's Armchair
+Not sure if this has rss yet 
+
 Underfold
 http://theunderfold.com/feed/
 
